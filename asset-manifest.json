@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/logs-app.github.io/static/css/main.562cbbff.css",
+    "main.js": "/logs-app.github.io/static/js/main.158a867a.js",
+    "static/media/noise-texture2-wide-cured2.png": "/logs-app.github.io/static/media/noise-texture2-wide-cured2.30ebfe5f645afe20ae98.png",
+    "static/media/noise-texture.png": "/logs-app.github.io/static/media/noise-texture.df41d6a531ca774b69a2.png",
+    "index.html": "/logs-app.github.io/index.html",
+    "main.562cbbff.css.map": "/logs-app.github.io/static/css/main.562cbbff.css.map",
+    "main.158a867a.js.map": "/logs-app.github.io/static/js/main.158a867a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.562cbbff.css",
+    "static/js/main.158a867a.js"
+  ]
+}
