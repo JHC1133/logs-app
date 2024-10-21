@@ -1,0 +1,71 @@
+.read-log-item-bar {
+    width: 80vw;
+    height: 98.7vh;
+    background: #1f262c;
+    background: radial-gradient(circle, rgba(31,38,44,1) 0%, rgba(30,37,43,1) 35%, rgba(33,40,47,1) 63%);
+    display: flex;
+    flex-direction: row;
+}
+
+.left-container {
+    flex-direction: column;
+    width: 55%; 
+    padding: 10px;
+}
+
+.right-container {
+    width: 35%;
+    margin-left: 50px;
+    padding: 0px;
+    flex-direction: column;
+}
+
+.read-log-item-bar h1 {
+    font-size: 75px;
+    margin-left: 50px;
+    color: #ffff;
+    margin-bottom: 0px;
+}
+
+.read-log-item-bar h2 {
+    color: #ffff;
+    margin-left: 50px;
+}
+
+.selected-media-container {
+    width: 35%; /* Takes up the other 45% of the width */
+    margin-left: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-entry-container {
+    overflow: auto; /* Enable scrollbars if content exceeds the textarea */
+    border: 1px solid #ccc;
+    max-width: 40vw;
+    max-height: 60vh;
+    min-height: 30vh;
+    padding-top: 10px;
+    border-radius: 3px;
+    padding-bottom: 1px;
+    padding-left: 10px;
+    margin-left: 50px;
+    color: #1f262c;
+    background-color: #ffff;
+}
+
+.log-entry-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.log-entry-container::-webkit-scrollbar-track {
+    background: #CCCCCC;
+    border-radius: 0px;
+    margin-right: 100px;
+}
+
+.log-entry-container::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 10px;
+}

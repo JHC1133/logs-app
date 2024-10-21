@@ -1,0 +1,21 @@
+.home-screen {
+    width: 80vw;
+    height: 98.7vh;
+
+    
+    background: #1f262c;
+    background: radial-gradient(circle, rgba(31,38,44,1) 0%, rgba(30,37,43,1) 35%, rgba(33,40,47,1) 63%);
+    
+}
+
+.home-screen h1 {
+    font-size: 90px;
+    margin-left: 50px;
+    margin-bottom: 00px;
+    color: #ffff;
+}
+
+.home-screen h2 {
+    margin-left: 50px;
+    color: #ffff;
+}
