@@ -1,3 +1,7 @@
+"use-strict";
+
+// The ReadLogItemBar is the bar that is shown when a LogItem is clicked. The bar shows the written information for the log 
+// as well as the media if it is a review.
 const ReadLogItemBar = ({ logEntry }) => {
     if (!logEntry) {
         return null;

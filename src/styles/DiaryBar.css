@@ -102,6 +102,20 @@
   cursor: pointer;
 }
 
+.remove-button {
+  position: absolute;
+  margin-top: 28%;
+  margin-left: 75px;
+
+  font-size: medium;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  background-color: #454545;
+  color: #fff;
+  cursor: pointer;
+}
+
 .save-button:hover {
   background-color: #3D3D3D;
 }

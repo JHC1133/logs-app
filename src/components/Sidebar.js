@@ -1,6 +1,7 @@
 // import React, {useState } from "react"
 import LogItem from './LogItem';
 
+// The SideBar holds the saved logentries, the button for adding a new log as well as the clickable title that shows the home screen.
 const Sidebar = ({ logEntries, handleAddLog, handleLogItemClick, showHomeScreen }) => {
     return (
         <div className="sidebar rounded box-shadow protest-strike">

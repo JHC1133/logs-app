@@ -16,12 +16,19 @@ const ReviewBar = ({ handleMediaSelect }) => {
       setSearchQuery('');
     };
 
+    // Fetches movie and game data from the OMDB API
     const fetchMovies = async () => {
+      try {
         const response = await fetch(`https://www.omdbapi.com/?s=${searchQuery}&apikey=${omdbAPIKey}`);
         const data = await response.json();
         return data.Response === "True" ? data.Search : [];
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+        return [];
+      }      
     }
 
+    // Currently not used, since the omdbAPI also fetches games.
     const fetchGames = async () => {
         const authResponse = await fetch(`https://id.twitch.tv/oauth2/token`,
           {
@@ -43,67 +50,89 @@ const ReviewBar = ({ handleMediaSelect }) => {
           body: `search "${searchQuery}"; fields name, release_dates.human;`
         });
         const data = await response.json();
-        return data;
+        return data || [];
     }
 
+    // Fetches the Spotify API token
     const fetchSpotifyToken = async () => {
+      try {
         const authResponse = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-             'Authorization': 'Basic ' + btoa(`${spotifyClientID}:${spotifyClientSecret}`),
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'grant_type=client_credentials'
+          method: 'POST',
+          headers: {
+          'Authorization': 'Basic ' + btoa(`${spotifyClientID}:${spotifyClientSecret}`),
+              'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'grant_type=client_credentials'
         });
         const data = await authResponse.json();
-        return data.access_token;
+        return data.access_token || [];
+        } catch (error) {
+          console.error("Error fetching music:", error);
+          return [];
+      }       
     };
 
+    // Fetches music data from the Spotify API
     const fetchMusic = async (token) => {
+      try {
         const response = await fetch(
-            `https://api.spotify.com/v1/search?q=${searchQuery}&type=track`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-        );
-        const data = await response.json();
-        return data.tracks.items;
+          `https://api.spotify.com/v1/search?q=${searchQuery}&type=track`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+      );
+      const data = await response.json();
+      return data.tracks.items.slice(0, 15) || [];
+      } catch (error) {
+        console.error("Error fetching music:", error);
+      }      
     };
 
+    // Currently not used, needs to be debugged. Made the website fail with some specific search inputs.
     const fetchBooks = async () => {
+      try {
         const response = await fetch(
           `https://openlibrary.org/search.json?q=${searchQuery}`
         );
         const data = await response.json();
-        return data.docs || [];
-      };
+        return data.docs.slice(0, 15) || [];
+      } catch (error) {
+        console.error("Error fetching books:", error);
+        return [];
+      }
+      
+    };
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
 
+    // Triggers the search whenever the search query changes
     useEffect(() => {
       const handleSearchSubmit = async () => {
         if (searchQuery.trim() === '') {
-          setSearchResult({ movies: [], music: []});
+          setSearchResult({ movies: [], music: [], books: [] });
           return;
         }
         setLoading(true);
         setError(null);
 
         try {
-          const [movies, spotifyToken] = await Promise.all([
+          const [movies, spotifyToken, books] = await Promise.all([
             fetchMovies(),
-            fetchSpotifyToken()
+            fetchSpotifyToken(),
+            fetchBooks()
           ]);
 
           const music = await fetchMusic(spotifyToken);
 
+          // Update state with search results, null if there are none.
           setSearchResult({
             movies: movies || [],
-            music: music || []
+            music: music || [],
+            books: books || []
           });
         } catch (error) {
           setError("Failed to fetch data. Please try again");
@@ -112,6 +141,7 @@ const ReviewBar = ({ handleMediaSelect }) => {
         }
       };
 
+      // Adds a delay to the search query to avoid excessive API calls.
       const delay = setTimeout(() => {
         if (searchQuery) {
           handleSearchSubmit();
@@ -129,7 +159,7 @@ const ReviewBar = ({ handleMediaSelect }) => {
       <input 
           type="text"
           className="search-bar rounded"
-          placeholder="Search for a Movie, Game, Song or Book title..."
+          placeholder="Search for a Movie, Game or Song title..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -146,7 +176,7 @@ const ReviewBar = ({ handleMediaSelect }) => {
           {/* Movies */}
           {searchResults.movies.length > 0 && (
             <div>
-              <h3>Movies</h3>
+              <h3>Movies & Games</h3>
               {searchResults.movies.map((movie) => (
                 <p 
                   key={movie.imdbID}
@@ -179,11 +209,11 @@ const ReviewBar = ({ handleMediaSelect }) => {
                     handleMediaSelect({
                       type: 'track',
                       title: track.name,
-                      artist: track.artists[0].name,
-                      imageUrl: track.album.images[0]?.url,
+                      artist: track.artists[0].name || "Unknown Artist",
+                      imageUrl: track.album.images[0]?.url || null,
                       year: new Date(track.album.release_date).getFullYear()
                     });
-                    clearSearchQuery();  // Clear search query on media select
+                    clearSearchQuery();
                   }}
                   className="clickable"
                 >
@@ -192,6 +222,33 @@ const ReviewBar = ({ handleMediaSelect }) => {
               ))}
             </div>
           )}
+
+          {/* Books NOT USED BECAUSE OF SEARCH ERRORS*/}
+          {/* {searchResults.books.length > 0 && (
+            <div>
+              <h3>Books</h3>
+              {searchResults.books.map((book, index) => (
+                <p 
+                  key={index}
+                  onClick={() => {
+                    handleMediaSelect({
+                      type: 'book',
+                      title: book.title,
+                      author: book.author_name?.[0] || "Unknown Author",
+                      year: book.first_publish_year,
+                      imageUrl: book.cover_i 
+                      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` 
+                      : null, // Default to null if no cover image is available
+                    });
+                    clearSearchQuery();
+                  }}
+                  className="clickable"
+                >
+                  {book.title} - {book.author_name[0].name} ({book.first_publish_year})
+                </p>
+              ))}
+            </div>
+          )} */}
         </div>
       )}
     </div>
