@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/logs-app/static/css/main.90be69f0.css",
+    "main.js": "/logs-app/static/js/main.d06ef756.js",
+    "static/media/noise-texture2-wide-cured2.png": "/logs-app/static/media/noise-texture2-wide-cured2.30ebfe5f645afe20ae98.png",
+    "static/media/noise-texture.png": "/logs-app/static/media/noise-texture.df41d6a531ca774b69a2.png",
+    "index.html": "/logs-app/index.html",
+    "main.90be69f0.css.map": "/logs-app/static/css/main.90be69f0.css.map",
+    "main.d06ef756.js.map": "/logs-app/static/js/main.d06ef756.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.90be69f0.css",
+    "static/js/main.d06ef756.js"
+  ]
+}
